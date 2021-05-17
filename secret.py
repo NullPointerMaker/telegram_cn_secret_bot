@@ -23,7 +23,7 @@ scheduler.start()
 
 
 def get_member(msg):
-    return str(msg.chat_id) + '@' + str(msg.from_user.id)
+    return '%d@%d' % (msg.chat_id, msg.from_user.id)
 
 
 # noinspection PyUnusedLocal
@@ -41,7 +41,7 @@ def secret(update, context):
         return
     # lifetime
     run_date = datetime.now() + timedelta(seconds=lifetime)
-    job = str(msg.chat_id) + '/' + str(msg.message_id)
+    job = '%d/%d' % (msg.chat_id, msg.message_id)
     scheduler.add_job(msg.delete, 'date', run_date=run_date, id=job)
 
 
@@ -49,7 +49,7 @@ def set_lifetime(msg, lifetime):
     member = get_member(msg)
     if lifetime > 0:
         lifetimeDB[member] = str(lifetime)
-        msg.reply_text('你在本群发送的消息将于 ' + lifetime + ' 秒后自动删除！')
+        msg.reply_text('你在本群发送的消息将于 %d 秒后自动删除！' % lifetime)
     else:
         del lifetimeDB[member]
         msg.reply_text('你在本群发送的消息将不会自动删除。')
