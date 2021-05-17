@@ -59,10 +59,10 @@ def set_lifetime(msg, lifetime):
     member = get_member(msg)
     if lifetime > 0:
         lifetimeDB[member] = str(lifetime)
-        msg.reply_text('你在本群发送的消息将于 %d 秒后自动删除！' % lifetime)
+        msg.reply_text('你在群内所发消息将于 %d 秒后自动删除！' % lifetime)
     else:
         del lifetimeDB[member]
-        msg.reply_text('你在本群发送的消息将不会自动删除。')
+        msg.reply_text('你在群内所发消息将不自动删除。')
 
 
 # noinspection PyUnusedLocal
