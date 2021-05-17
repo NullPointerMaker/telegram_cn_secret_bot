@@ -8,10 +8,15 @@ from datetime import datetime, timedelta
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
 # noinspection PyPackageRequirements
+from telegram import Bot
+# noinspection PyPackageRequirements
 from telegram.ext import Updater, MessageHandler, Filters
 
 with open('token') as f:
-    bot = Updater(f.read().strip(), use_context=True)
+    token = f.read().strip()
+
+bot = Bot(token)
+updater = Updater(token, use_context=True)
 
 lifetimeDB = dbm.open('lifetime.db', 'c')
 
@@ -24,6 +29,10 @@ scheduler.start()
 
 def get_member(msg):
     return '%d@%d' % (msg.chat_id, msg.from_user.id)
+
+
+def delete(chat_id, message_id):
+    bot.delete_message(chat_id, message_id)
 
 
 # noinspection PyUnusedLocal
@@ -40,9 +49,10 @@ def secret(update, context):
     if not lifetime > 0:
         return
     # lifetime
+    args = [msg.chat_id, msg.message_id]
     run_date = datetime.now() + timedelta(seconds=lifetime)
     job = '%d/%d' % (msg.chat_id, msg.message_id)
-    scheduler.add_job(msg.delete, 'date', run_date=run_date, id=job)
+    scheduler.add_job(delete, 'date', run_date=run_date, args=args, id=job)
 
 
 def set_lifetime(msg, lifetime):
@@ -66,8 +76,8 @@ def command(update, context):
         return set_lifetime(msg, int(parameter[0]))
 
 
-bot.dispatcher.add_handler(MessageHandler(Filters.command, command))
-bot.dispatcher.add_handler(MessageHandler(Filters.text, secret))
+updater.dispatcher.add_handler(MessageHandler(Filters.command, command))
+updater.dispatcher.add_handler(MessageHandler(Filters.text, secret))
 
-bot.start_polling()
-bot.idle()
+updater.start_polling()
+updater.idle()
