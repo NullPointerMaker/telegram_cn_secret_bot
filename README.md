@@ -2,9 +2,9 @@
 Telegram 机器人：个人消息自毁。
 
 ## 使用
-加入群组并赋予删除消息权限。  
-发送 `/lifetime n` 为 `n` 秒后删除消息。  
-发送 `/lifetime 0` 为不删除消息。
+拥有删除消息权限才能正常工作。  
+发送 `/lifetime n` 为 `n` 秒后自动删除你在群内所发消息。  
+发送 `/lifetime 0` 为关闭自动删除你在群内所发消息。
 
 ## 部署
 请先使用 [@BotFather](https://t.me/botfather) 生成一个机器人并获得 API Token。  
