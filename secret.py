@@ -23,7 +23,7 @@ scheduler.start()
 
 
 def get_member(msg):
-    return msg.chat_id + '@' + msg.from_user.id
+    return str(msg.chat_id) + '@' + str(msg.from_user.id)
 
 
 # noinspection PyUnusedLocal
@@ -41,7 +41,7 @@ def secret(update, context):
         return
     # lifetime
     run_date = datetime.now() + timedelta(seconds=lifetime)
-    job = msg.chat_id + "/" + msg.message_id
+    job = str(msg.chat_id) + '/' + str(msg.message_id)
     scheduler.add_job(msg.delete, 'date', run_date=run_date, id=job)
 
 
