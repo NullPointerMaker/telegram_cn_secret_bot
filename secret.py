@@ -57,7 +57,9 @@ def secret(update, context):
 
 def set_lifetime(msg, lifetime):
     member = get_member(msg)
-    if lifetime > 0:
+    if lifetime > 172800:
+        msg.reply_text('有效时间不能超过 2 天！')
+    elif lifetime > 0:
         lifetimeDB[member] = str(lifetime)
         msg.reply_text('你在群内所发消息将于 %d 秒后自动删除！' % lifetime)
     else:
