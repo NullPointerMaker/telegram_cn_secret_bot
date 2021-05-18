@@ -45,6 +45,9 @@ def secret(update, context):
         return
     # from user
     member = get_member(msg)
+    if member not in lifetimeDB:
+        return
+    # no setting
     lifetime = int(lifetimeDB[member])
     if not lifetime > 0:
         return
@@ -62,7 +65,7 @@ def set_lifetime(msg, lifetime):
     elif lifetime > 0:
         lifetimeDB[member] = str(lifetime)
         msg.reply_text('你在当前会话所发消息将于 %d 秒后自动删除！' % lifetime)
-    else:
+    elif member in lifetimeDB:
         del lifetimeDB[member]
         msg.reply_text('你在当前会话所发消息将不自动删除。')
 
